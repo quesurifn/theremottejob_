@@ -1,0 +1,13 @@
+.job-box {
+    margin: 20px 0;
+}
+
+.job-box-header {
+    display: flex;
+}
+
+.job-box-header button{
+    margin-top: 7px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
