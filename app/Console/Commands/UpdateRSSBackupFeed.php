@@ -53,6 +53,12 @@ class UpdateRSSBackupFeed extends Command
                 $rss_feed = $rss_feed->getBody();
                 $xml = simplexml_load_string($rss_feed);
                 $json = json_encode($xml);
+                $json = json_decode($json, TRUE);
+
+                foreach($json["channel"]['item'] as $key => $item) {
+                    $json["channel"]['item'][$key]['description'] = stripslashes($json["channel"]['item'][$key]['description']);
+                }
+
                 Cache::put($key, $json, 120);
                 $iterator++;
 
