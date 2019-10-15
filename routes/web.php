@@ -1,5 +1,6 @@
 <?php
 use App\Models\Job;
+use App\Utilities\Constants;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +16,21 @@ use App\Models\Job;
 Route::get('/', function () {
     
     $job = new Job();
+    $constants = new Constants();
+    $categories = $constants->job_types;
+    $homePageJobs = [];
+
+    foreach($categories as $c) {
+        $rss_backup = false;
+        $slug = $c['slug'];
+        // Query mySQL first
+        $mySqlJobs = $job->where('slug', $c['slug'])->order_by("created_at", "DESC")->get();
+        if(count($mySqlJobs) < 20) {
+            $rss_backup = Cache::get("rss-backup-$slug"); 
+        }
+        
+        $homePageJobs[$slug] = array_combine($mySqlJobs, $rss_backup);
+    }
 
     return view('index');
 });
