@@ -45,14 +45,24 @@ class UpdateRSSBackupFeed extends Command
         $jobTypes = $constants->job_types;
         $iterator = 0;
 
-        do {
-            $key = "rss-backup-" . $jobTypes[$iterator]["backup_rss"];
-            $rss_feed = $client->get($jobTypes[$iterator]["backup_rss"]);
-            $rss_feed = $rss_feed->getBody();
-            $xml = simplexml_load_string($rss_feed);
-            $json = json_encode($xml);
-            Cache::put($key, $json, 120);
-            $iterator++;
+        do { 
+
+            try {
+
+                $key = "rss-backup-" . $jobTypes[$iterator]["backup_rss"];
+                $rss_feed = $client->get($jobTypes[$iterator]["backup_rss"]);
+                $rss_feed = $rss_feed->getBody();
+                $xml = simplexml_load_string($rss_feed);
+                $json = json_encode($xml);
+                Cache::put($key, $json, 120);
+                $iterator++;
+
+            } catch(\Exception $e) {
+
+                \Log::info($e);
+
+            }
+
         } while($iterator <= count($jobTypes));
     }
 }
