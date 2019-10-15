@@ -27,12 +27,13 @@ Route::get('/', function () {
         $mySqlJobs = $job->where('slug', $c['slug'])->order_by("created_at", "DESC")->get();
         if(count($mySqlJobs) < 20) {
             $rss_backup = Cache::get("rss-backup-$slug"); 
+            $rss_backup = json_decode($rss_backup,true);
         }
-        
+
         $homePageJobs[$slug] = array_combine($mySqlJobs, $rss_backup);
     }
 
-    return view('index');
+    return view('index', $homePageJobs);
 });
 
 Route::get('/post-a-job', function () {

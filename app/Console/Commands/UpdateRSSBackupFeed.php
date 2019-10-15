@@ -56,7 +56,7 @@ class UpdateRSSBackupFeed extends Command
                 $json = json_decode($json, TRUE);
 
                 foreach($json["channel"]['item'] as $key => $item) {
-                    $json["channel"]['item'][$key]['description'] = stripslashes($json["channel"]['item'][$key]['description']);
+                    $json["channel"]['item'][$key]['full-time'] = strpos($json["channel"]['item'][$key]['description'], "full-time") === false ? "contract" : "full-time";
                 }
 
                 Cache::put($key, $json, 120);
