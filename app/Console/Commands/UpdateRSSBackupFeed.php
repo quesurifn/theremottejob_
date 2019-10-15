@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 use App\Utilities\Constants;
 use Illuminate\Console\Command;
 
-use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 
 class UpdateRSSBackupFeed extends Command
